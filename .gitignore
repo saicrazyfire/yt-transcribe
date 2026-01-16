@@ -33,3 +33,6 @@ uv.lock
 # Temporary files
 *.tmp
 *.log
+
+# Environment variables
+.env

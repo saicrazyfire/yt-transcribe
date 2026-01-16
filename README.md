@@ -119,8 +119,65 @@ You can modify the model in `transcribe.py` by changing `whisper.load_model("bas
 
 The current script uses OpenAI Whisper for simplicity. If you need WhisperX features, you can install it separately (`pip install whisperx`) and modify the transcription function.
 
+## Summarization
+
+The `summarize.py` script can summarize transcript files using OpenAI-compatible APIs (including local models).
+
+### Installation for Summarization
+
+```bash
+# Using uv
+uv sync
+# or
+uv run --with openai summarize.py
+
+# Using pip
+pip install openai
+```
+
+### Usage
+
+```bash
+python summarize.py [FILE] [OPTIONS]
+```
+
+### Summarization Arguments
+
+- `FILE` (optional): Path to transcript file. If not provided, will list files in output directory for selection.
+- `--output-dir`: Directory containing transcript files (default: `output`)
+- `--system-prompt`: Path to system prompt file (default: `system_prompt.txt`)
+- `--base-url`: Base URL for OpenAI API (for local models, e.g., `http://localhost:1234/v1`)
+- `--api-key`: API key for OpenAI API (not needed for local models)
+- `--model`: Model name to use (default: `gpt-3.5-turbo`)
+- `--max-tokens`: Maximum tokens in response (optional)
+- `-o, --output`: Output file for summary (default: print to stdout)
+
+### Summarization Examples
+
+```bash
+# Interactive selection from output directory
+python summarize.py
+
+# Specify file directly
+python summarize.py output/transcript.txt
+
+# Use local model (e.g., LM Studio, Ollama)
+python summarize.py output/transcript.txt --base-url http://localhost:1234/v1 --model local-model
+
+# Save summary to file
+python summarize.py output/transcript.txt -o summary.txt
+
+# Custom system prompt
+python summarize.py output/transcript.txt --system-prompt custom_prompt.txt
+```
+
+### System Prompt
+
+The default system prompt (`system_prompt.txt`) provides comprehensive instructions for summarizing transcripts. You can customize it to match your specific summarization needs.
+
 ## Notes
 
 - Temporary files are automatically cleaned up
 - Requires `yt-dlp` to be installed and available in your PATH
 - First transcription will be slower as it downloads the model (~150MB for "base" model)
+- For summarization, supports any OpenAI-compatible API (including local models via `--base-url`)
